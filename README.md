@@ -45,6 +45,41 @@ For a detailed technical overview and developer guides, refer to the official [P
 
 The PeoPay-Core contracts are designed to be modular and interoperable. Here’s a high-level overview of how they connect:
 
+```mermaid
+graph TD
+    subgraph User Interaction
+        A[User]
+    end
+
+    subgraph PeoPay Core Contracts
+        B(PeoCoin)
+        C(Staking)
+        D(DCS)
+        E(Governance)
+        F(Conversion)
+    end
+
+    subgraph Off-Chain Services
+        G[Backend Service]
+    end
+
+    A -- "Acquires" --> B
+    A -- "Stakes PEO" --> C
+    A -- "Votes on Proposals" --> E
+    A -- "Requests Conversion" --> F
+
+    C -- "Reads Staking Info" --> D
+    B -- "Reads Balance" --> D
+
+    D -- "Provides Score" --> E
+
+    F -- "Emits Event" --> G
+    G -- "Confirms Conversion" --> F
+
+    C -- "Holds Staked PEO" --> B
+    F -- "Locks PEO" --> B
+```
+
 -   **`PeoCoin`** is the central token. It is a standard ERC-20 contract that forms the economic foundation of the ecosystem.
 
 -   **`Staking`** contract allows users to lock their `PeoCoin` to earn rewards. This contract holds staked tokens and records the staking duration for each user.
