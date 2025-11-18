@@ -41,6 +41,29 @@ For a detailed technical overview and developer guides, refer to the official [P
 
 ---
 
+## System Architecture
+
+The PeoPay-Core contracts are designed to be modular and interoperable. Here’s a high-level overview of how they connect:
+
+-   **`PeoCoin`** is the central token. It is a standard ERC-20 contract that forms the economic foundation of the ecosystem.
+
+-   **`Staking`** contract allows users to lock their `PeoCoin` to earn rewards. This contract holds staked tokens and records the staking duration for each user.
+
+-   **`DCS` (Dynamic Contribution Scoring)** acts as a data aggregator. It reads a user's token balance from the `PeoCoin` contract and their staking information (amount and duration) from the `Staking` contract. It then calculates a weighted score that represents a user's overall contribution.
+
+-   **`Governance`** uses the `DCS` score to implement a weighted voting system. When a user votes on a proposal, the `Governance` contract fetches their score from `DCS` to determine the weight of their vote. This ensures that more active and invested users have a greater say in the ecosystem's future.
+
+-   **`Conversion`** provides a bridge to traditional finance by allowing users to convert their `PeoCoin` into mobile money. It interacts with an off-chain backend service, locking tokens in the contract while the off-chain transfer is processed.
+
+This architecture creates a synergistic loop:
+1.  Users acquire **`PeoCoin`**.
+2.  They can **`Stake`** their tokens to earn rewards and increase their contribution score.
+3.  The **`DCS`** contract calculates their score based on their holdings and staking activity.
+4.  This score empowers them in the **`Governance`** process.
+5.  Finally, they can use the **`Conversion`** contract to exit into local currency.
+
+---
+
 ## Repository Structure
 
 ```plaintext
